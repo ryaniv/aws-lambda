@@ -1,10 +1,8 @@
-import os
 import boto3
-import json
 
 SKIP_SHUTDOWN_TAG = 'skipshutdown'
 
-# Shutdonw all EC2 instances in a region
+# Shutdown all EC2 instances in a region
 def shutdown_ec2(regionName):
     ec2Client = boto3.client('ec2', region_name=regionName)
     response = ec2Client.describe_instances(MaxResults=1000)
@@ -45,8 +43,8 @@ def shutdown_ec2(regionName):
 
     print ('###### Region {0} - End Of Day - Stopped {1} instnaces ######'.format(regionName, len(instancesToStop)))
 
-# Shutdonw all RDS Clusters in a region
-def shutdonw_rds(regionName):
+# Shutdown all RDS Clusters in a region
+def shutdown_rds(regionName):
     rdsClient = boto3.client('rds', region_name=regionName)
     print ('###### Region {0} - Stoping RDS Clusters...'.format(regionName))
 
@@ -83,4 +81,4 @@ def lambda_handler(event, context):
     for regionName in regions:
         print('~~~~~~~ Region:{0} ~~~~~~~'.format(regionName))
         shutdown_ec2(regionName)
-        shutdonw_rds(regionName)
+        shutdown_rds(regionName)
